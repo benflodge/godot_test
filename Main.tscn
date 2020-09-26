@@ -1,0 +1,89 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://floor.tscn" type="PackedScene" id=1]
+[ext_resource path="res://walls.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Ramp.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Ball.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Player.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Goal.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Player.gd" type="Script" id=7]
+[ext_resource path="res://box.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Main.gd" type="Script" id=9]
+[ext_resource path="res://box.gd" type="Script" id=10]
+
+[sub_resource type="BoxShape" id=1]
+
+[node name="Main" type="Spatial"]
+script = ExtResource( 9 )
+
+[node name="box" parent="." instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 2, 5 )
+script = ExtResource( 10 )
+
+[node name="floor" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.116426, 0.184981, 0.0851221 )
+
+[node name="Ramp" parent="." instance=ExtResource( 3 )]
+transform = Transform( 0.866025, -0.5, 0, 0.5, 0.866025, 0, 0, 0, 1, 13, 4, 0 )
+
+[node name="Ball" parent="." instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 34, 8, 0 )
+mass = 20.0
+
+[node name="Goal" parent="." instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 42, 12, -4 )
+
+[node name="EndPlatform" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 34.0021, 6.0187, -0.00756168 )
+
+[node name="Area" type="Area" parent="EndPlatform"]
+transform = Transform( 1, 0, 0, 0, 5.3073, 0, 0, 0, 4.45995, 8.99362, 5.7881, 1.06838 )
+
+[node name="CollisionShape" type="CollisionShape" parent="EndPlatform/Area"]
+shape = SubResource( 1 )
+
+[node name="walls" parent="." instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 10.052, 1, 0 )
+
+[node name="walls2" parent="." instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9.94804, 1, 0 )
+
+[node name="walls3" parent="." instance=ExtResource( 2 )]
+transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 0, 1, 10 )
+
+[node name="walls4" parent="." instance=ExtResource( 2 )]
+transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 0, 1, -10 )
+
+[node name="Player" parent="." instance=ExtResource( 5 )]
+transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 2.00638, 0 )
+script = ExtResource( 7 )
+
+[node name="Camera" type="Camera" parent="Player"]
+transform = Transform( -0.0105027, 0.226248, -0.974013, 0.999942, -0.000136952, -0.0108141, -0.00258006, -0.97407, -0.226234, -6.6057, -6.31508e-07, -3.87616 )
+
+[node name="Panel" type="Panel" parent="."]
+margin_left = 409.0
+margin_top = 207.0
+margin_right = 590.0
+margin_bottom = 273.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Panel"]
+margin_left = 61.0
+margin_top = 26.0
+margin_right = 168.0
+margin_bottom = 48.0
+text = "You Win!"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="DirectionalLight" type="DirectionalLight" parent="."]
+transform = Transform( 0.0741117, 0.574356, -0.815244, -0.0508557, 0.818605, 0.572101, 0.995952, -0.000939555, 0.0898775, -16.3044, 13.8347, -0.00170326 )
+light_color = Color( 0.984314, 0.968627, 0.968627, 1 )
+light_energy = 0.5
+shadow_enabled = true
+[connection signal="body_entered" from="box" to="box" method="_on_box_body_entered"]
+[connection signal="body_entered" from="EndPlatform/Area" to="." method="_on_Area_body_entered"]
